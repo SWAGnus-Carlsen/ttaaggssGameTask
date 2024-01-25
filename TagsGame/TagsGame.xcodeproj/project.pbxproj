@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		124F20592B620D7000B461C8 /* UIBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F20582B620D7000B461C8 /* UIBuilder.swift */; };
+		124F205B2B620DB600B461C8 /* WinScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F205A2B620DB600B461C8 /* WinScene.swift */; };
+		124F205D2B620E4000B461C8 /* SettingsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 124F205C2B620E4000B461C8 /* SettingsScene.swift */; };
 		1269FDC22B5F29240039C658 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1269FDC12B5F29240039C658 /* AppDelegate.swift */; };
 		1269FDC82B5F29240039C658 /* InitialGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1269FDC72B5F29240039C658 /* InitialGameScene.swift */; };
 		1269FDCA2B5F29240039C658 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1269FDC92B5F29240039C658 /* GameViewController.swift */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		124F20582B620D7000B461C8 /* UIBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBuilder.swift; sourceTree = "<group>"; };
+		124F205A2B620DB600B461C8 /* WinScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinScene.swift; sourceTree = "<group>"; };
+		124F205C2B620E4000B461C8 /* SettingsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScene.swift; sourceTree = "<group>"; };
 		1269FDBE2B5F29240039C658 /* TagsGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TagsGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1269FDC12B5F29240039C658 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1269FDC72B5F29240039C658 /* InitialGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialGameScene.swift; sourceTree = "<group>"; };
@@ -40,6 +46,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		124F20522B620CD300B461C8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1269FDD02B5F29280039C658 /* LaunchScreen.storyboard */,
+				1269FDCE2B5F29280039C658 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		124F20532B620CE800B461C8 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1269FDCB2B5F29240039C658 /* Main.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		124F20542B620CFD00B461C8 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				124F20572B620D5500B461C8 /* Builders */,
+				1269FDC72B5F29240039C658 /* InitialGameScene.swift */,
+				1269FDD82B6020020039C658 /* MainGameScene.swift */,
+				124F205A2B620DB600B461C8 /* WinScene.swift */,
+				124F205C2B620E4000B461C8 /* SettingsScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		124F20552B620D0900B461C8 /* AppDelegates */ = {
+			isa = PBXGroup;
+			children = (
+				1269FDC12B5F29240039C658 /* AppDelegate.swift */,
+			);
+			path = AppDelegates;
+			sourceTree = "<group>";
+		};
+		124F20562B620D1A00B461C8 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				1269FDC92B5F29240039C658 /* GameViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		124F20572B620D5500B461C8 /* Builders */ = {
+			isa = PBXGroup;
+			children = (
+				124F20582B620D7000B461C8 /* UIBuilder.swift */,
+			);
+			path = Builders;
+			sourceTree = "<group>";
+		};
 		1269FDB52B5F29240039C658 = {
 			isa = PBXGroup;
 			children = (
@@ -59,14 +118,12 @@
 		1269FDC02B5F29240039C658 /* TagsGame */ = {
 			isa = PBXGroup;
 			children = (
-				1269FDC12B5F29240039C658 /* AppDelegate.swift */,
-				1269FDC72B5F29240039C658 /* InitialGameScene.swift */,
-				1269FDC92B5F29240039C658 /* GameViewController.swift */,
-				1269FDD82B6020020039C658 /* MainGameScene.swift */,
+				124F20552B620D0900B461C8 /* AppDelegates */,
+				124F20562B620D1A00B461C8 /* ViewControllers */,
+				124F20542B620CFD00B461C8 /* Scenes */,
 				1269FDDA2B61CE560039C658 /* Sounds */,
-				1269FDCB2B5F29240039C658 /* Main.storyboard */,
-				1269FDD02B5F29280039C658 /* LaunchScreen.storyboard */,
-				1269FDCE2B5F29280039C658 /* Assets.xcassets */,
+				124F20532B620CE800B461C8 /* Storyboards */,
+				124F20522B620CD300B461C8 /* Resources */,
 			);
 			path = TagsGame;
 			sourceTree = "<group>";
@@ -151,8 +208,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				124F20592B620D7000B461C8 /* UIBuilder.swift in Sources */,
+				124F205D2B620E4000B461C8 /* SettingsScene.swift in Sources */,
 				1269FDC82B5F29240039C658 /* InitialGameScene.swift in Sources */,
 				1269FDCA2B5F29240039C658 /* GameViewController.swift in Sources */,
+				124F205B2B620DB600B461C8 /* WinScene.swift in Sources */,
 				1269FDC22B5F29240039C658 /* AppDelegate.swift in Sources */,
 				1269FDD92B6020020039C658 /* MainGameScene.swift in Sources */,
 			);

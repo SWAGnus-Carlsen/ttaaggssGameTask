@@ -10,12 +10,9 @@ import GameplayKit
 import AVFoundation
 
 
-protocol WinScreenDelegate: AnyObject {
-    func presentInitialGameScene()
-}
 
 //MARK: - MainGameScene
-final class MainGameScene: SKScene, WinScreenDelegate {
+final class MainGameScene: SKScene {
     
     //MARK: UI Elements
     private let timerLabel = SKLabelNode(fontNamed: "Helvetica")
@@ -29,8 +26,8 @@ final class MainGameScene: SKScene, WinScreenDelegate {
     private lazy var restartButton = UIBuilder.createButton(withImgName: "Restart")
     
     //MARK: Private properties
-    var audioPlayer: AVAudioPlayer?
-    var feedbackGenerator: UINotificationFeedbackGenerator?
+    private var audioPlayer: AVAudioPlayer?
+    private var vibrationGenerator: UINotificationFeedbackGenerator?
     
     private var elapsedTime: TimeInterval = 0.0
     private var isTimerRunning = true
@@ -44,25 +41,25 @@ final class MainGameScene: SKScene, WinScreenDelegate {
     
     
     //MARK: Tiles test
-    let gridSize = 4
-    let tileSize: CGFloat = 220
+    private let gridSize = 4
+    private let tileSize: CGFloat = 220
     
-    var tiles: [SKSpriteNode] = []
+    private var tiles: [SKSpriteNode] = []
     
-    var shouldPerformActionAfterWin = true
-    var isGamePaused = false
-    var vibrationEffectIsOn = true
-    var soundEffectIsOn = true
+    private var shouldPerformActionAfterWin = true
+    private var isGamePaused = false
+    private var vibrationEffectIsOn = true
+    private var soundEffectIsOn = true
     
-    //MARK: Override funcs
+    //MARK: Override methods
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         setupUI()
         setupGame()
         
         // Initialize feedback generator
-        feedbackGenerator = UINotificationFeedbackGenerator()
-        feedbackGenerator?.prepare()
+        vibrationGenerator = UINotificationFeedbackGenerator()
+        vibrationGenerator?.prepare()
         
         if let soundURL = Bundle.main.url(forResource: "moveSound", withExtension: "mp3") {
             do {
@@ -72,8 +69,6 @@ final class MainGameScene: SKScene, WinScreenDelegate {
                 print("Error initializing audio player: \(error.localizedDescription)")
             }
         }
-        
-        print(vibrationEffectIsOn, soundEffectIsOn)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -109,10 +104,11 @@ final class MainGameScene: SKScene, WinScreenDelegate {
             
             if restartButton.contains(location) {
                 isTimerRunning = true
-                elapsedTime = 0
-                numberOfMoves = 0
                 startTimer()
                 pausePlayButton.texture = SKTexture(imageNamed: "Pause")
+                setupGame()
+                numberOfMoves = 0
+                elapsedTime = 0
             }
             
             guard gameField.contains(location) else { return }
@@ -134,13 +130,14 @@ final class MainGameScene: SKScene, WinScreenDelegate {
             isWin() {
             
             shouldPerformActionAfterWin.toggle()
-            print("You win!")
             stopTimer()
             presentWinScreen()
         }
     }
     
-    func presentInitialGameScene() {
+    
+    //MARK: Private methods
+    private func presentInitialGameScene() {
         let initialGameScene = InitialGameScene(size: self.size)
         initialGameScene.scaleMode = .aspectFill
         let transition = SKTransition.crossFade(withDuration: 1.0)
@@ -157,15 +154,14 @@ final class MainGameScene: SKScene, WinScreenDelegate {
         self.view?.presentScene(winScreen, transition: .crossFade(withDuration: 1.0))
     }
     
-    func presentSettingsScreen() {
+    private func presentSettingsScreen() {
         let screenSize = self.frame.size
-        let settingsScreen = SettingsScreen(size: screenSize)
+        let settingsScreen = SettingsScene(size: screenSize)
         settingsScreen.zPosition = 6
         settingsScreen.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         addChild(settingsScreen)
     }
     
-    //MARK: Private funcs
     private func switchButtonImage() {
         if pausePlayButton.texture?.description.contains("Pause") ?? false {
             pausePlayButton.texture = SKTexture(imageNamed: "Play")
@@ -176,8 +172,10 @@ final class MainGameScene: SKScene, WinScreenDelegate {
 }
 
 //MARK: - 15 puzzle game tiles logic
-extension MainGameScene {
+private extension MainGameScene {
     func setupGame() {
+        tiles.forEach { $0.removeFromParent() }
+        tiles = []
         let tileSize = CGSize(width: tileSize, height: tileSize)
         
         
@@ -241,7 +239,7 @@ extension MainGameScene {
         }
         
         func provideVibrationEffect() {
-            feedbackGenerator?.notificationOccurred(.success)
+            vibrationGenerator?.notificationOccurred(.success)
         }
         
         func playMoveSound() {
@@ -354,170 +352,13 @@ private extension MainGameScene {
 
 
 
-enum UIBuilder {
-    static func createButton(withImgName name: String) -> SKSpriteNode {
-        let button = SKSpriteNode(imageNamed: name)
-        button.zPosition = 1
-        button.name = name
-        return button
-    }
-}
-
-
-class WinScene: SKScene {
-    
-    lazy var menuButton = UIBuilder.createButton(withImgName: "Menu")
-    lazy var restartButton = UIBuilder.createButton(withImgName: "Restart")
-    
-    init(size: CGSize, numberOfMoves: Int, elapsedTime: TimeInterval) {
-        super.init(size: size)
-        
-        self.backgroundColor = SKColor.black.withAlphaComponent(0.5)
-        self.name = "WinScene"
-        self.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
-        let youWinImage = SKSpriteNode(imageNamed: "YouWin")
-        youWinImage.position = CGPoint(x: 0, y: 200)
-        youWinImage.zPosition = 4
-        youWinImage.name = "YouWin"
-        youWinImage.alpha = 1
-        addChild(youWinImage)
-        
-        let youWinBG = SKSpriteNode(imageNamed: "YouWinBG")
-        youWinBG.position = CGPoint(x: 50, y: 0)
-        youWinBG.zPosition = 2
-        youWinBG.name = "YouWinBG"
-        addChild(youWinBG)
-        
-        let infoFieldImage = SKSpriteNode(imageNamed: "infoFieldImage")
-        infoFieldImage.position = CGPoint(x: 0, y: -200)
-        infoFieldImage.zPosition = 3
-        infoFieldImage.name = "infoFieldImage"
-        infoFieldImage.alpha = 1
-        addChild(infoFieldImage)
-        
-        let movesLabel = SKLabelNode(fontNamed: "Helvetica")
-        movesLabel.fontSize = 72
-        movesLabel.position = CGPoint(x: 0, y: -50)
-        movesLabel.text = "Moves: \(numberOfMoves)"
-        movesLabel.name = "movesLabel"
-        movesLabel.zPosition = 1
-        infoFieldImage.addChild(movesLabel)
-        
-        let timerLabel = SKLabelNode(fontNamed: "Helvetica")
-        timerLabel.fontSize = 72
-        timerLabel.position = CGPoint(x: 0, y: movesLabel.frame.minY - 60)
-        let minutes = Int(elapsedTime) / 60
-        let seconds = Int(elapsedTime) % 60
-        timerLabel.text = String(format: "Time: %02d:%02d", minutes, seconds)
-        timerLabel.name = "timerLabel"
-        timerLabel.zPosition = 1
-        infoFieldImage.addChild(timerLabel)
-        
-        menuButton.anchorPoint = CGPoint(x: 0, y: 1)
-        menuButton.position = CGPoint(x: 50, y: infoFieldImage.frame.minY - 50)
-        addChild(menuButton)
-        
-        restartButton.anchorPoint = CGPoint(x: 1, y: 1)
-        restartButton.position = CGPoint(x: -50, y: infoFieldImage.frame.minY - 50)
-        addChild(restartButton)
-    }
-    
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        for touch in touches {
-            let location = touch.location(in: self)
-            
-            if menuButton.contains(location) {
-                presentInitialGameScene()
-            }
-            
-            if restartButton.contains(location) {
-                transitionToMainGameScene()
-            }
-        }
-    }
-    
-    private func presentInitialGameScene() {
-        let initialGameScene = InitialGameScene(size: self.size)
-        initialGameScene.scaleMode = .aspectFill
-        let transition = SKTransition.crossFade(withDuration: 1.0)
-        self.view?.presentScene(initialGameScene, transition: transition)
-    }
-    
-    private func transitionToMainGameScene() {
-        
-        guard self.view?.window?.rootViewController != nil else {
-            return
-        }
-        let mainGameScene = MainGameScene(size: self.size)
-        self.view?.presentScene(mainGameScene, transition: .crossFade(withDuration: 1.0))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 
 
 
 
-class SettingsScreen: SKScene {
-    
-    let settingsNode = SKSpriteNode(color: UIColor.black.withAlphaComponent(0.7), size: CGSize(width: 1393, height: 2340))
-    let titleLabel = SKLabelNode(fontNamed: "ArialMT")
-    let soundSwitch = UISwitch()
-    let vibrationSwitch = UISwitch()
-    
-    override func didMove(to view: SKView) {
-        setupSettingsScreen()
-    }
-    
-    func setupSettingsScreen() {
-        // Settings Node
-        settingsNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        settingsNode.zPosition = 10
-        addChild(settingsNode)
-        
-        // Title Label
-        titleLabel.text = "Settings"
-        titleLabel.fontSize = 30
-        titleLabel.fontColor = SKColor.white
-        titleLabel.position = CGPoint(x: 0, y: settingsNode.size.height / 2 - 50)
-        settingsNode.addChild(titleLabel)
-        
-        // Sound Switch
-        soundSwitch.isOn = true // You can set the default value based on your preferences
-        addSwitchToSettingsNode(switchNode: soundSwitch, label: "Sound", position: CGPoint(x: 0, y: 20))
-        
-        // Vibration Switch
-        vibrationSwitch.isOn = true // You can set the default value based on your preferences
-        addSwitchToSettingsNode(switchNode: vibrationSwitch, label: "Vibration", position: CGPoint(x: 0, y: -40))
-    }
-    
-    func addSwitchToSettingsNode(switchNode: UISwitch, label: String, position: CGPoint) {
-        // Create SKNode to hold label and switch
-        let switchContainer = SKNode()
-        
-        // Label
-        let labelNode = SKLabelNode(fontNamed: "ArialMT")
-        labelNode.text = label
-        labelNode.fontSize = 20
-        labelNode.fontColor = SKColor.white
-        labelNode.position = CGPoint(x: -80, y: 0)
-        switchContainer.addChild(labelNode)
-        
-        //        // UISwitch
-        //        let switchSprite = SKSpriteNode(color: .clear, size: CGSize(width: 50, height: 30))
-        //        let switchTexture = SKView().texture(from: switchNode)
-        //        switchSprite.texture = switchTexture
-        //        switchSprite.position = CGPoint(x: 30, y: 0)
-        //        switchContainer.addChild(switchSprite)
-        
-        // Position and add to settingsNode
-        switchContainer.position = position
-        settingsNode.addChild(switchContainer)
-    }
-}
+
+
+
+
+
 
