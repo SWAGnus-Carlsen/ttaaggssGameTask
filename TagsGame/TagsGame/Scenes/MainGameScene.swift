@@ -190,8 +190,17 @@ private extension MainGameScene {
         }
         
         
-        tiles.shuffle()
-//        moveTile(at: 14)
+        
+        //Use here false for easy win check
+        if true {
+            tiles.shuffle()
+        } else {
+            numberOfMoves = -1
+            moveTile(at: 14)
+        }
+        
+        
+
         updateTilePositions()
     }
     
