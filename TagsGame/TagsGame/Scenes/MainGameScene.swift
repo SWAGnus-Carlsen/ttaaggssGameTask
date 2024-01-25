@@ -31,7 +31,7 @@ final class MainGameScene: SKScene {
     
     private var elapsedTime: TimeInterval = 0.0
     private var isTimerRunning = true
-    private var numberOfMoves: Int = -1 {
+    private var numberOfMoves: Int = 0 {
         didSet {
             movesLabel.text = "Moves: \(numberOfMoves)"
         }
@@ -190,8 +190,8 @@ private extension MainGameScene {
         }
         
         
-        //        tiles.shuffle()
-        moveTile(at: 14)
+        tiles.shuffle()
+//        moveTile(at: 14)
         updateTilePositions()
     }
     
