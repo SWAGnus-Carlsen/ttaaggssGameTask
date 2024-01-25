@@ -14,6 +14,7 @@
 		1269FDCF2B5F29280039C658 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1269FDCE2B5F29280039C658 /* Assets.xcassets */; };
 		1269FDD22B5F29280039C658 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1269FDD02B5F29280039C658 /* LaunchScreen.storyboard */; };
 		1269FDD92B6020020039C658 /* MainGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1269FDD82B6020020039C658 /* MainGameScene.swift */; };
+		1269FDDC2B61CE560039C658 /* moveSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1269FDDB2B61CE560039C658 /* moveSound.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		1269FDCE2B5F29280039C658 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1269FDD12B5F29280039C658 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1269FDD82B6020020039C658 /* MainGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameScene.swift; sourceTree = "<group>"; };
+		1269FDDB2B61CE560039C658 /* moveSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moveSound.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,11 +63,20 @@
 				1269FDC72B5F29240039C658 /* InitialGameScene.swift */,
 				1269FDC92B5F29240039C658 /* GameViewController.swift */,
 				1269FDD82B6020020039C658 /* MainGameScene.swift */,
+				1269FDDA2B61CE560039C658 /* Sounds */,
 				1269FDCB2B5F29240039C658 /* Main.storyboard */,
 				1269FDD02B5F29280039C658 /* LaunchScreen.storyboard */,
 				1269FDCE2B5F29280039C658 /* Assets.xcassets */,
 			);
 			path = TagsGame;
+			sourceTree = "<group>";
+		};
+		1269FDDA2B61CE560039C658 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				1269FDDB2B61CE560039C658 /* moveSound.mp3 */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1269FDCD2B5F29240039C658 /* Main.storyboard in Resources */,
+				1269FDDC2B61CE560039C658 /* moveSound.mp3 in Resources */,
 				1269FDCF2B5F29280039C658 /* Assets.xcassets in Resources */,
 				1269FDD22B5F29280039C658 /* LaunchScreen.storyboard in Resources */,
 			);
